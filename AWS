@@ -1,1 +1,5 @@
+## Memory Utilization in EC2 Instances
 
+When we are launching EC2 Instances we will be scpecifying amoun of memory (RAM).To monitor the memory utilization by EC2 Instances we use aws cloudwatch
+monitoring service which will collect various metrics from EC2 Instances.We can view those metrics in AWS cloudwatch console or through cloudwath API.
+OS allocates RAM to applications and decides based on the situation.
