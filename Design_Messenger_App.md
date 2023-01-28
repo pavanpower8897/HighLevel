@@ -14,6 +14,8 @@ Messenger is a social media application used for text, audio, video communicatio
 
 # Scale estimation 
 
+# Database 
+
 # Components involved 
 
 # Design architecture 
