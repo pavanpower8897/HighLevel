@@ -15,6 +15,7 @@ reads are eventually consistent using 'Hinted Handoff' technique.
 'QUORUM' write request will be successful after writing to majority of replicas like if we have 3 nodes write will be sucecssfull after writing to 2 nodes its to 
 handle balance between write latency and read consistency.
 
+- Cassendra is said to be column but its actually a hybrid as we can also store all row attributes together, There is a concept called super column which group together multiple columns in one column and helps in retrieving specific attribute fields more efficiently.
 
 - In DynamoDB partition and sort key contains only one attribute where as in cassendra can contain more than one attribute Ex: In users model partition key can be both first name and last name. Parition key in both dynamodb and cassendra used to identifty physical location of the partition node where data is stored.
 - In cassendra with the increase in number of partitions the overhead to manage the partitions increase as cassenra is a eventually consistent data store where data will be 
