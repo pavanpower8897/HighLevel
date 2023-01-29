@@ -22,6 +22,7 @@ The challenge here is to design data models in DynamoDB. For that first we need 
   - Fetch friends and groups from user_id 
   - Fetch one to one conversation data from user_id 
   - Fetch group conversation data
+  - Fetch all users in a group
   - Send msg to group or friend(1:1) 
 
 # Components involved 
