@@ -14,9 +14,9 @@ For example following tasks:
 - Configuration management: Zookeeper helps kafka broker manage configuration information such as topic configuration, broker configuration etc. 
 
 # Kafka broker
-<img width="1540" alt="Screenshot 2023-02-19 at 5 43 43 PM" src="https://user-images.githubusercontent.com/44682188/219947447-e7a6f085-944c-4bb8-a7fe-6bd239b1f469.png">
+<img width="1478" alt="Screenshot 2023-02-19 at 5 47 52 PM" src="https://user-images.githubusercontent.com/44682188/219947455-0da295ea-4d40-40c5-8247-922c7f14e417.png">
 
 # Kafka cluster
 Kafka cluster can have multiple kafka brokers, Basically the reason for having multiple kafka brokers is for load sharing and data replication.
-<img width="1478" alt="Screenshot 2023-02-19 at 5 47 52 PM" src="https://user-images.githubusercontent.com/44682188/219947455-0da295ea-4d40-40c5-8247-922c7f14e417.png">
+<img width="1540" alt="Screenshot 2023-02-19 at 5 43 43 PM" src="https://user-images.githubusercontent.com/44682188/219947447-e7a6f085-944c-4bb8-a7fe-6bd239b1f469.png">
 
