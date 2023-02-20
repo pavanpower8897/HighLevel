@@ -14,9 +14,18 @@ For example following tasks:
 - Configuration management: Zookeeper helps kafka broker manage configuration information such as topic configuration, broker configuration etc. 
 
 # Kafka broker
+In Kafka broker we are going to write and read data to topic partitions.
 <img width="1478" alt="Screenshot 2023-02-19 at 5 47 52 PM" src="https://user-images.githubusercontent.com/44682188/219947455-0da295ea-4d40-40c5-8247-922c7f14e417.png">
 
 # Kafka cluster
 Kafka cluster can have multiple kafka brokers, Basically the reason for having multiple kafka brokers is for load sharing and data replication.
 <img width="1540" alt="Screenshot 2023-02-19 at 5 43 43 PM" src="https://user-images.githubusercontent.com/44682188/219947447-e7a6f085-944c-4bb8-a7fe-6bd239b1f469.png">
+
+# Kafka Topic
+ - In kafka data is classified into topics where publish can publish certain related data on certain topic and consumer will consume that data from that topic. These messages can stay on disk based on size or time strategy where in case of time strategy we can say how long a msg can retain in kafka or we can provide maximum parition size so once that size is reached old data will start evacuating.
+
+### No Kafka server can run without a zookeeper server. It is mandatory to run the zookeeper server.
+
+While publishing the kafka messages we can explicitly mention the partition if not then kafka broker user its default partitioner which uses a hash function on key level to decide which parittion it should write in a evenly distributed messages accorss the partitions. Sarama go package also provides a way to implement a custom paritioner where we can use customer algorithms for message partition distribution.
+
 
