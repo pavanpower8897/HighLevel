@@ -28,4 +28,9 @@ Kafka cluster can have multiple kafka brokers, Basically the reason for having m
 
 While publishing the kafka messages we can explicitly mention the partition if not then kafka broker user its default partitioner which uses a hash function on key level to decide which parittion it should write in a evenly distributed messages accorss the partitions. Sarama go package also provides a way to implement a custom paritioner where we can use customer algorithms for message partition distribution.
 
+# Kafka consumer group 
+
+Kafka consumer group is ntng but a list of consumers(In aws ec2 instances) who wants to share the partitions for consuming messages on kafka topic. Only one consumer can listen on certain partition so whenever a consumer is getting added to a consumer group partition assigner rebalance and assigns the
+partitions based on the situation. 
+Only one consumer can be assigned to one partition.
 
