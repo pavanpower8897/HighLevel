@@ -35,6 +35,8 @@ partitions based on the situation.
 Only one consumer can be assigned to one partition.
 
 # Consumer Offset 
+It refers to the position of consumer in a kafka topic partition.When a consumer group reads from a Kafka topic, each partition of the topic is assigned to one of the consumers in the group. The consumer group keeps track of the last offset that each consumer read in each partition. This offset indicates the position of the last record that was read by the consumer in that partition for a consumer group.
 
+It make sures that same record not being consumed multiple times within a consumer group.
 # Consumer Lag Metrics
 
