@@ -34,3 +34,7 @@ Kafka consumer group is ntng but a list of consumers(In aws ec2 instances) who w
 partitions based on the situation. 
 Only one consumer can be assigned to one partition.
 
+# Consumer Offset 
+
+# Consumer Lag Metrics
+
