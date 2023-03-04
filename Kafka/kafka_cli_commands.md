@@ -1,6 +1,15 @@
 1. Running the consumer with certain consumer group on certain topic it starts reading from beginning
    - docker exec -it kafka-2 kafka-console-consumer --bootstrap-server kafka-1:29092,kafka-2:29092 --topic test-topic --group test-group --from-beginning
    - docker exec -it kafka-2 kafka-console-consumer --bootstrap-server kafka-1:29092,kafka-2:29092 --topic test-topic --group test-group --from-beginning --property print.offset=true --property print.partition=true
+   
+   For publishing json payload we should use below one.
+   docker exec -it kafka-1 kafka-console-producer \
+  --broker-list kafka-1:29092,kafka-2:29092 \
+  --topic test-topic \
+  --property "parse.key=true" \
+  --property "key.separator=:"
+  
+  Sample input: 1:{"id": 1, "name": "Alice"} (Remembers 1: before json payload)
 
 2. For consuming from a partiticular offset 
    - docker exec -it kafka-2 kafka-console-consumer --bootstrap-server kafka-1:29092,kafka-2:29092 --topic test-topic --from-offset 5
