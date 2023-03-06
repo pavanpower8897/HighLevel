@@ -5,8 +5,6 @@ Ex: If a celebraty posted something we have to send notification to million of f
 Why youtbude has bell icon ?
 To understand who are loyal followers and giving priority to them (Means sending real time notifications compared to other normal followers)
 
-
-
 Why ?
 
 
