@@ -1,3 +1,11 @@
+# Kafka 
+
+Kafka can act as message broker for asynchronous communication between services. With below advantages:
+   - Reliability: Kafka offers durable message storage where messages published to kafka are stored in these persisted storage as a log with some offset and retention period which ensures high reliability and durability.
+   - Scalability: 
+   - Atomicity: 
+   - Loose coupling: Kafka acts as a buffer between services, decoupling producer and consumer, Services can produce and consume independly without the availability of the service.
+   - Idempotency: 
 
 # Zookeper
 Open source apache service which provides centralized service for managing configurations, naming, synchronization over a large clusters in
