@@ -51,3 +51,9 @@ Kafka also provides a built-in topic called "__consumer_offsets" that stores the
 
 # Consumer Lag Metrics
 
+
+Whenever a new consumer is going up in a consumer group, partition assigner will rebalance the partitions and partitioner ensures that data is distributed evenly.
+
+When a consumer group is created or rebalancing is triggered due to changes in the consumer group (e.g., addition or removal of consumers), the Group Coordinator is responsible for executing the partition assignment algorithm. This algorithm takes into account the current state of the group, the topic partitions, and the consumers' capabilities to determine the partition assignment.
+
+For each partition, there is a leader and multiple replicas across the Kafka cluster. The leader is responsible for handling read and write requests for that partition, while the replicas replicate the data for fault tolerance.
