@@ -1,0 +1,37 @@
+TCP/ IP Model -> Model to standardize computer networking
+OSI Model -> Not being used in real world
+
+1.PHYSICAL  -> Cables, NIC(Network interface card)
+2.DATA LINK -> Ethernet, Switches
+3.NETWORK -> IP, Routers
+4.TRANSPORT -> TCP, UDP
+5.APPLICATION -> HTTPS, SMPTY, FTP protocals
+
+Each device contains this all layers (Headers adding)
+DATA  -> DATA
+TCP | DATA  -> SEGMENT
+IP | TCP | DATA  -> PACKET
+ETHERNET | IP | TCP | DATA | ETHERNET -> FRAME
+PHYSICAL layer transmits this encapulated fram
+
+At destination device decapsulate this informaion at each layer and passes to above layer.
+
+
+
+TRANSPORT layer -> TCP, UDP ->
+Do we need to send the  reliable or unreliable data
+TCP (Transmision control protocal) (It can reliably send and receive data)  -> Adds TCP Header to DatA
+- 3 Way handshake (SYNC, SYNC-ACK, ACK)
+- TCP Added number to segments so they can be reorder correctly at the destination
+- Checksum (Result of simple calculation ran over the data) - after the data has been tranmitted successfully checksum
+at the receiver side should match with checksum at senders side
+
+UDP (User datagram protocol)  -> unreliable (It useful in live streamings, video calls, gaming) -> Adds UDP Header to DATA
+- Receiver just keep sending the data
+UDP Header contains (Source port, destination port, length, checksum)
+
+TRANSPORT layer also responsible for choosing port number
+-IP Address gets the data to the computer but its the port number that gets the data to right application
+-local computer adds the randomly genrate port number as source number at TCP layer and destination depends on the application protocal (HTTPS: 443)
+For popular protocal standard port numbers were already allocated . (Well known ports)(0-1023) (1024- 49151)->Registered ports which companies were registered
+(49151 - 65535) -> Dynamically assigned ports (Used by local computers to randomly generate this port numbers as source port for each application)
