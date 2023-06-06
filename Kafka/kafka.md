@@ -57,3 +57,5 @@ Whenever a new consumer is going up in a consumer group, partition assigner will
 When a consumer group is created or rebalancing is triggered due to changes in the consumer group (e.g., addition or removal of consumers), the Group Coordinator is responsible for executing the partition assignment algorithm. This algorithm takes into account the current state of the group, the topic partitions, and the consumers' capabilities to determine the partition assignment.
 
 For each partition, there is a leader and multiple replicas across the Kafka cluster. The leader is responsible for handling read and write requests for that partition, while the replicas replicate the data for fault tolerance.
+
+It's worth noting that starting from Apache Kafka version 2.4, the default hashing algorithm for message partitioning has been changed to the Java default hashing algorithm (FNV-1a). However, the Murmur2 algorithm is still supported and can be explicitly configured if desired.
