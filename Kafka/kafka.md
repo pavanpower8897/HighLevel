@@ -59,3 +59,5 @@ When a consumer group is created or rebalancing is triggered due to changes in t
 For each partition, there is a leader and multiple replicas across the Kafka cluster. The leader is responsible for handling read and write requests for that partition, while the replicas replicate the data for fault tolerance.
 
 It's worth noting that starting from Apache Kafka version 2.4, the default hashing algorithm for message partitioning has been changed to the Java default hashing algorithm (FNV-1a). However, the Murmur2 algorithm is still supported and can be explicitly configured if desired.
+
+If size of the parition limit reaches then there is no auto resize or split policy , system administrator has to manually repartition or ading data retention policy so that old data will be archieved from the partition.
