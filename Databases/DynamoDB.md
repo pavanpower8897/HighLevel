@@ -32,3 +32,20 @@ While designing data models we have to keep in mind about the hotspots which can
 
 To prevent this we have distribute our parition keys as evenly as posisible like using post_id and user_id as partition keys which will prevent hot keys to some level and after that we can use caching and hot partition writes technique to reduce the severity further.
 <img width="1179" alt="Screenshot 2023-01-29 at 3 57 36 PM" src="https://user-images.githubusercontent.com/44682188/215320285-340917b7-e498-424c-91ec-f25eb50c5312.png">
+
+GSIs:
+To speed up the queries of non key attributes we can use global secondary indexs. It contains selected items from the base table and not necessarily needed to have same partition/sort key.
+Primary key attributes must be there as atleast non key attributes in the GSI Table.
+In the GSI Query you can only fetch the attributes that are projected to GSI.
+DyanamoDB only propagates data for which key attributes exists.
+<img width="1122" alt="Screenshot 2023-07-03 at 11 47 30 PM" src="https://github.com/pavanpower8897/HighLevel/assets/44682188/81537b3f-47e4-4139-8914-f413f172b971">
+
+Data will be updated in asynchronous manner from base table using eventually consistent model and GSIs inherit the read and write capacities from the base table.
+In unlikely failure scenarios it might take some time for data to be populated on the GSIs, So your applications need to anticipate and handle situations where a query on a global secondary index returns results that are not up to date.
+A table with many global secondary indexes incurs higher costs for write activity than tables with fewer indexes.
+
+How scan exactly works ?
+   - Does it sequentially checks all the partitions or some other way ?
+   - There is a way to do parllel scan by spawning multiple child threads(workers) by defining some segment number(0 to n) and TotalSegments(n) to dynamodb, Which can utilize the max read throughput provisioned and do the parllel scan.
+   - Generally scan retrieves 1MB of data to application and application requests again for next 1MB of data sequentially.
+   - 
