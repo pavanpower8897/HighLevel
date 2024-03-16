@@ -44,6 +44,7 @@ Data will be updated in asynchronous manner from base table using eventually con
 In unlikely failure scenarios it might take some time for data to be populated on the GSIs, So your applications need to anticipate and handle situations where a query on a global secondary index returns results that are not up to date.
 A table with many global secondary indexes incurs higher costs for write activity than tables with fewer indexes.
 
+
 How scan exactly works ?
    - Does it sequentially checks all the partitions or some other way ?
    - There is a way to do parllel scan by spawning multiple child threads(workers) by defining some segment number(0 to n) and TotalSegments(n) to dynamodb, Which can utilize the max read throughput provisioned and do the parllel scan.
