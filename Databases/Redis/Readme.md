@@ -26,3 +26,17 @@ Below CPU Cache layers present closer to CPU Cores than the main memory, So prov
     - Data cache → Stores frequently accessed data.
 - L2 Cache: It is larger than L1 Cache and present further away from CPU Cores. It serves as a secondary cache providing additional capacity to store frequently used data and instructions. L2 Cache typically shared amount multiple cores.
 - L3 Cache: It is a higher level cache shared amount multiple CPU Cores or processor modules.Its larger and slower than L1 and [L2.It](http://L2.It) tries to reduce the need to access main memory frequently.
+
+Redis is really just an API for accessing data structures.
+
+Redis not only stores strings but some complex data structures like hashes, list , set, Sorted set, Geo spacial, Hyperloglog, streams and pubsub 
+
+We can use redis not only for caching but for powering real time analytics, streaming , gaming leaderboads, geospatial field etc.
+
+Ex:
+
+For gaming leaderboard we use redis sorted sets for identying the high score gamers instantly 
+
+Questions:
+
+Redis hashes disadvantages like if we use hash it can create hotspot keys in one shard , So that shard behaves weiredly cuz network bandwidth will increase if the size of the redis keys are huge.
