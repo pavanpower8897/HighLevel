@@ -61,3 +61,20 @@ For each partition, there is a leader and multiple replicas across the Kafka clu
 It's worth noting that starting from Apache Kafka version 2.4, the default hashing algorithm for message partitioning has been changed to the Java default hashing algorithm (FNV-1a). However, the Murmur2 algorithm is still supported and can be explicitly configured if desired.
 
 If size of the parition limit reaches then there is no auto resize or split policy , system administrator has to manually repartition or ading data retention policy so that old data will be archieved from the partition.
+
+
+Replication factor cant be greater than number of kafka brokers..
+Controller like leader in kafka cluster manages the any admistrative tasks like partition reassignement and manages the partitions and replications
+In sync replicas are basically replicas which are in sync , Once the leader got the data, Generally other replicas keeps on polling the leader partition for fetching the latest data to be in sync, Its always subset of the replica nodes
+In Kafka cluster one of the broker serves as a controller, And it also maintains the parittion states and its transition from one state to another along with replica states
+Parition states: NonExist, NewPartion (Leader not assigned yet so no reads/writes), Online, Offline (due to any reason if leader goes offline , one of the replica starts acting like the leader
+Number of partitions can be only increased and not decreased, is it true ? Why we cant decrease because there will be a data loss because of it.
+
+
+
+
+
+
+
+
+
