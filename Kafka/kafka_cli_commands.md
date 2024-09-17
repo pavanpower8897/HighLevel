@@ -22,3 +22,18 @@
 
 5. Checking how many paritions for a topic
    - ``` docker exec -it kafka-1 kafka-topics --bootstrap-server kafka-1:29092,kafka-2:29092 --describe --topic test-topic  ```
+
+
+bin/zkServer.sh  start-foreground
+bin/kafka-server-start.sh config/server.properties
+echo dump | nc localhost 2181 | grep brokers
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic firstTopic --partitions 1 --replication-factor 1
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --describe
+bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic firstTopic
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic firstTopic
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic firstTopic --from-beginning
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list (List of consumer groups)
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group console-consumer-57317
+bin/kafka-reassign-partitions.sh --bootstrap-server localhost:2181 --topics-to-move-json-file topics-to-move.json --broker-list "2,3" --generate (Generates the json file for partition reassignment)
+
