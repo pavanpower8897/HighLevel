@@ -70,9 +70,17 @@ In Kafka cluster one of the broker serves as a controller, And it also maintains
 Parition states: NonExist, NewPartion (Leader not assigned yet so no reads/writes), Online, Offline (due to any reason if leader goes offline , one of the replica starts acting like the leader
 Number of partitions can be only increased and not decreased, is it true ? Why we cant decrease because there will be a data loss because of it.
 
+--
+Consumer offsset maintains the partition * consumer group level offsets and partition to consuemr mapping in a consumer group 
+And parititions will be assigned through parition assigner and rebalacnce will trigger whenever a new consumer leaves or adds to the group. 
 
+Offset will be commited to __consumer_offsets topic by consumer and it can be done in auto sync commit manner through kafka configuation key and also manually consumer can commit sync or async manner
 
+How kafka prevents to read from the same offset in most of the cases unless the consumer crashes by keeping inmemory buffer of offsets and poll endpoint it will give the next batch offsets 
+But if consumer crashes it picks from kafka commited offset only which is very interesting. 
 
+Unless the consumer crashes its exactly once processing but if consumer crashes it can process multiple times.
+<img width="863" alt="Screenshot 2024-09-18 at 11 02 55 AM" src="https://github.com/user-attachments/assets/670a825d-f0a4-4f68-af5e-6d88c29f5715">
 
 
 
