@@ -6,3 +6,6 @@ And important thing to remember here is segments are immutable
 
 Now elastic search basically mergs the smaller segments is a comparitevly big segment through background processes asyn way for optimizing the number of parllel processing over all small segments.
 
+Elastic search going to search on all these segments and merges the data and returns the info.
+
+
