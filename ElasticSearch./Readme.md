@@ -9,3 +9,6 @@ Now elastic search basically mergs the smaller segments is a comparitevly big se
 Elastic search going to search on all these segments and merges the data and returns the info.
 
 
+Whenever a document is deleted then lucine does this as a soft delete and it actully maintains a bitset of 1/0 which indicated whether a doc is deleted or not
+And each bit indicates the document id inside a segment this is different than global document id, each bitset is mapped to the segment and this segment contain internal document id ranging 1 to ... 1000 ... etc.. 
+
