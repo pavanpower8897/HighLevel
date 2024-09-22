@@ -82,3 +82,9 @@ Understant the exact difference between node cache and shard cache ???
 The design allows for fault tolerance. If the active master node fails, the cluster will automatically elect a new master, ensuring continuous operation.
 
 But yes temperoary desruption is there till another master node will be up after the election process.
+
+
+So all are ES servers only just using lucine libraries in the ES Server code ?
+
+<img width="1050" alt="Screenshot 2024-09-23 at 2 14 49 AM" src="https://github.com/user-attachments/assets/71ac3b0c-7235-45bc-bd6a-8cbb9214abc9">
+
