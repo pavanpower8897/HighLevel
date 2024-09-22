@@ -68,6 +68,17 @@ I was curious and asked doesnt it become a single point of failure, but ES maste
 mainly data processing indexing will be done by data nodes 
 And at the end merging and pagination also does by coordination nodes which can be more thatn one , Master node delegates the whole thing to coordination node. And on master node typically no data will be stored and no query processing happens 
 
+
+Yes, that's correct! In Elasticsearch, when a query involves aggregation (such as a "group by" operation), the final grouping and consolidation of results are handled by the coordinating node after it receives partial results from the data nodes. Here’s how this process works:
+
+
+The coordinating node does not maintain its own separate query cache. Instead, it relies on the query results cached at the data nodes when routing requests and aggregating results.
+
+In addition to the node query cache, there is also a shard query cache at the data node level that stores the results of aggregations. This cache is specifically for the results of aggregation queries and can also speed up subsequent identical aggregation queries.
+
+Understant the exact difference between node cache and shard cache ??? 
+
+
 The design allows for fault tolerance. If the active master node fails, the cluster will automatically elect a new master, ensuring continuous operation.
 
 But yes temperoary desruption is there till another master node will be up after the election process.
