@@ -1,4 +1,7 @@
 
+**Yes, in an Elasticsearch cluster, there is only one active master node at any given time. Here’s a more detailed explanation:
+
+
 Elastic search stores the index data into segments which acts as sub indexes and whenever a doc is inserted to ES its going to crete a new small segment which contains the inverted index 
 info and document field storage info and vector term info (like term frequency etc..)  , Here in inverted index it contians the map of terms to docIDs for example.
 
@@ -25,3 +28,46 @@ So here important thing to note here is disk operations contains I/O and general
 -> Why fsync is required after commiting from ES application ?
 Because aftering commit the data the OS generally cache its it in memory for waiting to write the  batch data to disks, So inbetween if the system crashes the data will be lost which for application it thinks data is already phycically stored but in reality that is not that case.
 so fsync forcefully pushes or flushes in memory OS buffer to dish and it also increase the Disk IO and affeects other operations.
+
+-> How elastic cache invalidates the query cache which it cached for queries ?
+Elastic cache do two type of query caching
+1. Node caching (Ntng but segment caching) : it caches the segments which are involved in the queries so next time if the same segment involved in the query it checks in the cache and if it
+   misses then it checks in the disk.
+
+
+-> How elastic search executes a filter query ?
+  - Its generally a two step process one is DISK I/O operation where it fetches the segments to RAM
+  - And CPU loads the information from RAM and applies the filter
+  - And then the filtered segments are cached in the memory on segment level
+  - Elasticsearch uses a combination of memory mapping and segment loading:
+
+     Suppose range query on created at field is there
+    - It first tries to fetch the created_at field inverted index info (Maybe it uses the bucketing to minizes the info or in naive case its going to load all the inverted index created at field values
+    - Now CPU nows the possible values now its going to do the range query and then shortlist the docIDs
+    - Now its going load the segments for those docIDs from memory/ OS page cache/ Disk (If the segment is getting frequently accessed between filters etc.. then whole segment will be fetched and cached)
+
+   Multiple filter execution like field: active, name: pavan
+   - In this cases it fetches the docIDs by direct term matching the inverted indexing using memory map for each filter individually
+   - CPU takes the intersection or UNION or bitset operation for logic operations to shortlist the docIDs
+   - Fetch the docIDs info for further result gather
+
+   - Uniqueness: The uniqueness of the key comes from the specific combination of query structure and parameters. Even a small change in the query (e.g., changing the range values) would result in a different cache key.
+   - When the same query is run again, Elasticsearch checks the cache for the cache key.
+If a cache hit occurs, it retrieves the results. However, before returning the cached results, it will check the segment metadata to ensure that the segments associated with the cache entry have not changed.
+If the relevant segments have been updated (e.g., their version numbers have changed), the cache entry is invalidated, and the query is re-executed against the current segments.
+
+  - <img width="898" alt="Screenshot 2024-09-23 at 1 31 49 AM" src="https://github.com/user-attachments/assets/6f9e4fee-361b-493f-b8cc-4abd41ee8378">
+
+  Distributed elastic search query execution
+<img width="991" alt="Screenshot 2024-09-23 at 1 56 47 AM" src="https://github.com/user-attachments/assets/46d7afd2-c12c-43e6-87df-823e66f2f9eb">
+
+<img width="826" alt="Screenshot 2024-09-23 at 2 00 38 AM" src="https://github.com/user-attachments/assets/b28f4fe1-ab46-44cc-9aef-c0dee07ecb9c">
+
+If any master node fails another node will be elected by voting and one who gots majority of votes will be assigned as master
+I was curious and asked doesnt it become a single point of failure, but ES master doesnt do much execpt cluster management redirection and node health and other coordination jobs
+mainly data processing indexing will be done by data nodes 
+And at the end merging and pagination also does by coordination nodes which can be more thatn one , Master node delegates the whole thing to coordination node. And on master node typically no data will be stored and no query processing happens 
+
+The design allows for fault tolerance. If the active master node fails, the cluster will automatically elect a new master, ensuring continuous operation.
+
+But yes temperoary desruption is there till another master node will be up after the election process.
