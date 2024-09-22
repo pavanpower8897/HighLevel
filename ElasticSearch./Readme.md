@@ -17,3 +17,11 @@ When Lucene writes data it first writes to an in-memory buffer, When the data in
 
 So when Lucene is searching internally, it makes a two-phase query. The first phase is to list the DocId’s found to contain the given Term, and the second phase is to find the Doc based on the DocId. Lucene provides functionality to search by Term as well as to query on the basis of DocId.
 
+
+- Why more index commits increases the latency ?
+Because during index commits ES flushes in memory buffer where it gathers the latest updates/insertions/deletions data to disk, Now lucine will create the segments in the disk along with some meta data
+So here important thing to note here is disk operations contains I/O and generally takes more time access the data / write compared to RAM even with latest SSDs and more over its a shared resource, So if there are more frequent commits its going to consume more disk resources which effects the queries happening on that disk.
+
+-> Why fsync is required after commiting from ES application ?
+Because aftering commit the data the OS generally cache its it in memory for waiting to write the  batch data to disks, So inbetween if the system crashes the data will be lost which for application it thinks data is already phycically stored but in reality that is not that case.
+so fsync forcefully pushes or flushes in memory OS buffer to dish and it also increase the Disk IO and affeects other operations.
