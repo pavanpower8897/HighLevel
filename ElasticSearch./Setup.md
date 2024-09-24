@@ -1,0 +1,3 @@
+./bin/elasticsearch
+
+Pass: MzYUvuqBhrKRcQHuzZlE
