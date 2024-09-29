@@ -19,6 +19,13 @@ And each bit indicates the document id inside a segment this is different than g
 
 
 When Lucene writes data it first writes to an in-memory buffer, When the data in the Buffer reaches a certain amount, it will be flushed to become a Segment, Before segments are flushed or committed, data is stored in memory and is unsearchable. This is another reason why Lucene is said to provide near-real time and not real-time queries
+** But because we are writing to in memory buffer if there is any crash there is chance of data loss and it creates inconsistent system, So Elastic search handles this by first writing to trans log to in memory and flushes the translog to disk (Here its configurable to wait for translog to be flushed to disk or asyn it can and return the ack for faster processing , performance vs durability) 
+ES on system crash and its recovery it reads the last commit point and reply the trans log operattion which are stored after the commit point. 
+Last Commit Point: Elasticsearch maintains a commit point or marker that indicates the last operation that was successfully flushed to disk and associated with a segment. This is essential for recovery after a crash.
+The commit point is updated every time a flush occurs. Essentially, this is a record of the last operation that has been safely persisted in the segments.
+Translogs on the Primary: Each primary shard in Elasticsearch has its own translog that logs all write operations. When a write operation occurs, it is recorded in the translog of the primary shard.
+Translogs on Replicas: The replicas also have their own translogs, which are used to ensure data consistency. When a primary shard performs a write operation, that operation is sent to its replicas to be logged in their respective translogs.
+
 
 So when Lucene is searching internally, it makes a two-phase query. The first phase is to list the DocId’s found to contain the given Term, and the second phase is to find the Doc based on the DocId. Lucene provides functionality to search by Term as well as to query on the basis of DocId.
 
