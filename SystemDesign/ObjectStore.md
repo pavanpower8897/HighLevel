@@ -5,7 +5,6 @@ In AWS S3 by looking at the file path of the object it looks like objects are st
 
 Why cant we use Databases to store objects ?
 
-![Uploading Screenshot 2024-09-28 at 5.13.56 PM.png…]()
 
 
 Why cant we use file systems to store these objects ?
@@ -14,3 +13,4 @@ Why cant we use file systems to store these objects ?
 <img width="1731" alt="Screenshot 2024-09-28 at 5 13 00 PM" src="https://github.com/user-attachments/assets/b447a5a0-d762-4b7d-9aa9-1e6803bee274">
 
 
+<img width="1792" alt="Screenshot 2024-09-28 at 5 13 56 PM" src="https://github.com/user-attachments/assets/d08c12c2-6169-44a1-9cc1-5e072c38bf77">
