@@ -14,3 +14,10 @@ Why cant we use file systems to store these objects ?
 
 
 <img width="1792" alt="Screenshot 2024-09-28 at 5 13 56 PM" src="https://github.com/user-attachments/assets/d08c12c2-6169-44a1-9cc1-5e072c38bf77">
+
+
+Erasure Coding: 
+Erasure coding is a method used in data storage to provide redundancy and fault tolerance while minimising storage overhead.
+In erasure coding data will be divided into blocks and redudant blocks are generated with mathematical computation between blocks, Now these redundant blocks we call it as parity blocks 
+using this we can reconstruct the orgiinal block,
+So using erasure coding we can provide same level or redundancy/availability/fault tolerance with minuimum storage overhead 
