@@ -98,8 +98,8 @@ So all are ES servers only just using lucine libraries in the ES Server code ?
 <img width="1050" alt="Screenshot 2024-09-23 at 2 14 49 AM" src="https://github.com/user-attachments/assets/71ac3b0c-7235-45bc-bd6a-8cbb9214abc9">
 
 Overall Execution Flow
-Filters (narrow down the documents).
-Query (applies scoring if necessary).
-Sorting (sorts the filtered and/or scored documents).
-Aggregations (group by or calculate metrics after filtering, querying, and sorting).
+- Filters (narrow down the documents).
+- Query (applies scoring if necessary).
+- Sorting (sorts the filtered and/or scored documents).
+- Aggregations (group by or calculate metrics after filtering, querying, and sorting).
 
