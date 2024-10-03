@@ -1,2 +1,3 @@
 - podman ps
-- 
+- podman up pubsub-kafka -d
+- podman start pubsub-kafka
