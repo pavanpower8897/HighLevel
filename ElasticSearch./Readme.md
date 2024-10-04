@@ -103,3 +103,13 @@ Overall Execution Flow
 - Sorting (sorts the filtered and/or scored documents).
 - Aggregations (group by or calculate metrics after filtering, querying, and sorting).
 
+
+- Scoreing functions will be applied after query filters are evaluated on matching documents.
+- Query and filters execution are Interleaved Execution , ES executes the filters parllely or sequentially which is optimized with least expensive operation first
+- Term queries are the most efficient queries that Elasticsearch supports: their matches are pre-computed in the inverted index structure. (https://www.elastic.co/blog/elasticsearch-query-execution-order) , Based on the query type like term / conjuction / disjunction it estimates the cost and then executes the queries in the way in which it will cost less cost and ES doesnt expose the information and here the ordering of my queries/filter doesnt matter as ES automitically reorder according to its score.
+- Do filters get executed before or after queries? -> We cant say everything is interleaved 
+- In summary, Elasticsearch executes queries and filters in an interleaved manner based on cost optimization rather than strictly one after another
+
+-> Total hits in the query response means total documents matching your query
+---**For aggegation cardinality of field also matters as it ES uses the data structure like global cardinals to maintain the map of unique strings and it will be done in coordinator node also at further reduce phase which can have incremental latency issue.n 
+-> Size of the field also matters in the case of aggregations...
