@@ -95,3 +95,63 @@ func main() {
 	fmt.Println(x)
 	return
 ```
+
+
+Above one is practised one, Below is efficient one shared by gpt
+
+```
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+type RedisConnectionPool struct {
+	connections chan int
+	timeout     time.Duration
+}
+
+func NewRedisConnectionPool(size int, timeout time.Duration) *RedisConnectionPool {
+	pool := &RedisConnectionPool{
+		connections: make(chan int, size), // Buffered channel
+		timeout:     timeout,
+	}
+	// Initialize connections
+	for i := 1; i <= size; i++ {
+		pool.connections <- i
+	}
+	return pool
+}
+
+// GetConnectionWithTimeout tries to acquire a connection with a timeout
+func (rc *RedisConnectionPool) GetConnectionWithTimeout(i int) (int, error) {
+	select {
+	case conn := <-rc.connections:
+		return conn, nil // Acquired connection
+	case <-time.After(rc.timeout):
+		return 0, fmt.Errorf("goroutine %d: timed out", i) // Timeout exceeded
+	}
+}
+
+func main() {
+	rc := NewRedisConnectionPool(2, 2*time.Second) // Pool with 2 connections
+
+	for i := 0; i < 5; i++ {
+		go func(i int) {
+			conn, err := rc.GetConnectionWithTimeout(i)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			fmt.Printf("Goroutine %d acquired connection %d\n", i, conn)
+			time.Sleep(1 * time.Second) // Simulate work
+			rc.connections <- conn // Release the connection
+			fmt.Printf("Goroutine %d released connection %d\n", i, conn)
+		}(i)
+	}
+
+	time.Sleep(5 * time.Second) // Wait for all goroutines to finish
+}
+
+```
