@@ -113,3 +113,15 @@ Overall Execution Flow
 -> Total hits in the query response means total documents matching your query
 ---**For aggegation cardinality of field also matters as it ES uses the data structure like global cardinals to maintain the map of unique strings and it will be done in coordinator node also at further reduce phase which can have incremental latency issue.n 
 -> Size of the field also matters in the case of aggregations...
+
+***
+numeric and string data are stored, indexed, and processed in Lucene’s internal data structures.
+String fields are stored as inverted index which is optimized for exact match searches but less efficient for sorting and aggregations
+Numeric Fields(integers, longs, floats, doubles) Stored in optimized block k-d tree (BKD tree) which is efficient for range queries and space
+Why keyword fields are less efficient than numeric fields for aggregations ? Aggregations will be performed by lucene and it depends on how the fields are internally structured
+When aggregating on keyword fields, Elasticsearch internally hashes the string values to keep track of unique values. -> Hashing takes more time
+Elastic search has to keep track of all these unique hashes in memory for maintaining the group which memory and CPU Intensive compared to numeric fields
+Lexicographical Comparisons when strings matched for aggregations (his is less efficient than numeric comparisons due to the way string sorting works:)
+Memory Overhead During Aggregation
+
+***
