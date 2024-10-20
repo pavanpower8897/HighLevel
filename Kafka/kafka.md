@@ -61,7 +61,17 @@ For each partition, there is a leader and multiple replicas across the Kafka clu
 It's worth noting that starting from Apache Kafka version 2.4, the default hashing algorithm for message partitioning has been changed to the Java default hashing algorithm (FNV-1a). However, the Murmur2 algorithm is still supported and can be explicitly configured if desired.
 
 If size of the parition limit reaches then there is no auto resize or split policy , system administrator has to manually repartition or ading data retention policy so that old data will be archieved from the partition.
+Kafka writes partition data to disk in log segments
+***While assigning the partition to the broker there wont be any fixed memory allocation, So one high throughput and large msg size partitions can effect
+the whole health of the broker***
+-> We can increase the number of partitions to reduce the load on single parition and anyways kafka controller will try to distribute the partitions to brokers as evenly as possible
+-> Topic-Level Resource Quotas: 
+   -> Producer Quotas: Limits the maximum bytes per second a producer can send.
+   -> Consumer Quotas: Limits the maximum bytes per second a consumer can fetch.
+-> Isolating Hot Partitions to seperate kafka clusters
 
+While the reassignment is taking place, If a consumer tries to fetch data from a partition that has just undergone a leader election, it will receive an error indicating that the leader is not available. The consumer will retry the request after a brief period, at which point the new leader will be ready to serve requests.
+Kafka guarantees that if a consumer successfully commits an offset, it is guaranteed to be durable (i.e., it will not be lost) even in the event of leader reassignments. This durability is achieved through the replication of the __consumer_offsets topic.
 
 Replication factor cant be greater than number of kafka brokers..
 Controller like leader in kafka cluster manages the any admistrative tasks like partition reassignement and manages the partitions and replications
