@@ -14,7 +14,8 @@
 - And after sometime the previous aggregation queries and remaining query latencies has increased significantly which we havent observed before, So we thought its due to indexing and switched of the aggregation but as without aggregation we were getting similar orders at same place which again few folks raised that concern so we disabled the new filter flow and decided to enable the new flow once everything is stable and indexing migration is done.
 - As we gaussed as the reads were not there at the time of indexing, So the latencies were increased  but after that we enabled for 1% of users and as the  nodes started warmingup the latencies started decreasing from more than 500ms to less than 100ms
 - And in between we also observed that on search keyword we were using wildcard query, For this query also latency has shooted up during indexing and then we releized that this is not optimized and rolled back to previous search index, Ideally we should have used different catalogue word key words ins searchTerms but we have used the slugName which is just one combination word, As search is not critical we thought of reindexing everything with seperate word search terms later
-- And later aggregation query also we optimized as its giving a bit un expected released, By smoothening the mealtime hour using gauss and 
+- And later aggregation query also we optimized as its giving a bit un expected released, By smoothening the mealtime hour using gauss and
+- Total around 2.4 billion records were indexed
 
     <img width="1428" alt="Screenshot 2024-11-05 at 1 05 00 AM" src="https://github.com/user-attachments/assets/327ef7fb-5525-47ba-a541-e808b95db97e">
 
