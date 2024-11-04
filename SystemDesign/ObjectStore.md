@@ -22,7 +22,7 @@ In erasure coding data will be divided into blocks and redudant blocks are gener
 using this we can reconstruct the orgiinal block,
 So using erasure coding we can provide same level or redundancy/availability/fault tolerance with minuimum storage overhead 
 
-![WhatsApp Image 2024-11-05 at 1 22 50 AM](https://github.com/user-attachments/assets/8e2dffdc-00bb-4deb-9bb0-029214dfa849)
-![WhatsApp Image 2024-11-05 at 1 22 49 AM](https://github.com/user-attachments/assets/46e505f5-9322-40c5-94fc-529d488625b9)
-![WhatsApp Image 2024-11-05 at 1 22 49 AM (1)](https://github.com/user-attachments/assets/8f33b1ed-6dd4-447a-84bd-b3b8a907f4e9)
 ![WhatsApp Image 2024-11-05 at 1 22 48 AM](https://github.com/user-attachments/assets/d1e9340f-44ea-4470-add8-3c8a3c8009a4)
+![WhatsApp Image 2024-11-05 at 1 22 49 AM (1)](https://github.com/user-attachments/assets/8f33b1ed-6dd4-447a-84bd-b3b8a907f4e9)
+![WhatsApp Image 2024-11-05 at 1 22 49 AM](https://github.com/user-attachments/assets/46e505f5-9322-40c5-94fc-529d488625b9)
+![WhatsApp Image 2024-11-05 at 1 22 50 AM](https://github.com/user-attachments/assets/8e2dffdc-00bb-4deb-9bb0-029214dfa849)
