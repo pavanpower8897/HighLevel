@@ -15,3 +15,14 @@ Upon consuming the res event, we’ll make a call to benefits service correspond
 After fetching the offer details, we’ll populate the resId in all the relevant <S2Cell_OfferType_Date> hashmaps.
 
 Correspondingly, we’ll store the res metadata like timeslots, tagged dish ids in another hash map.
+
+For eg. - resId is 20208 and today’s date is 08/01/25
+Offer details for resId 20208 is as follows:
+
+{
+    resId: 20208
+    saltId: 10102
+    timeslots : [[12:00,14:00],[16:00,18:00]]
+    item_ids: [1,2,3,4]
+    offertype: BXGY
+}
