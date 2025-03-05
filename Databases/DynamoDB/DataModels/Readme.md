@@ -1,3 +1,8 @@
+Wrapper for dynamodb where we implemented a connection pool to optimize the latency of p99
+If ur Connection Pooling for High-Throughput Upstreams!
+If your service makes frequent upstream calls, be mindful of connection pooling to avoid unnecessary overhead and latency spikes.
+
+
 ![WhatsApp Image 2024-11-27 at 6 28 04 PM](https://github.com/user-attachments/assets/e4341bb7-5929-4f46-ab79-d8a39b71f755)
 ![WhatsApp Image 2024-11-27 at 6 28 04 PM (1)](https://github.com/user-attachments/assets/e417ecf8-765c-408b-9c8f-0136366fb438)
 ![WhatsApp Image 2024-11-27 at 6 28 03 PM](https://github.com/user-attachments/assets/d1a917af-a671-42d4-a83c-75b73c3ab1ef)
