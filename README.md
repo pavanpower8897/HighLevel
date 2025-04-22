@@ -10,19 +10,15 @@ https://www.uber.com/en-IN/blog/real-time-push-platform/
 
 
 🧠 How to Think About It as a System Designer
+
 Don’t assume:
-
-Events will come once and on time.
-
-Your processor will never crash.
-
-Your data pipeline will always be consistent.
+- Events will come once and on time.
+- Your processor will never crash.
+- Your data pipeline will always be consistent.
 
 Instead, ask:
 
-"If I get this event twice, what will happen?"
-
-"If this event is late by 10 minutes, will it still be useful?"
-
-"If I reprocess yesterday’s data, will I corrupt today’s?"
+- "If I get this event twice, what will happen?"
+- "If this event is late by 10 minutes, will it still be useful?"
+- "If I reprocess yesterday’s data, will I corrupt today’s?"
 
