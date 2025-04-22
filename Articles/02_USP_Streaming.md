@@ -11,9 +11,12 @@ That’s micro-batching — it's faster than traditional batch jobs, but not rea
 
 Why Micro-Batching ≠ Sub-Second Latency?
 Let’s say your goal is to respond within 200ms of an event happening (like a user clicking a listing).
+- If you use Spark with a 1-second micro-batch interval:
+- An event that arrives just after a batch starts will wait nearly a full second before it’s even seen.
+- Then Spark needs a few 100ms to run its job and emit results.
 
-If you use Spark with a 1-second micro-batch interval:
+In Contrast: Event-at-a-Time (True Streaming)
+Frameworks like Apache Flink, Kafka Streams, or Apache Beam (on Dataflow) process each event as soon as it arrives — this is true streaming, enabling:
+Sub-second end-to-end latencies.
 
-An event that arrives just after a batch starts will wait nearly a full second before it’s even seen.
 
-Then Spark needs a few 100ms to run its job and emit results.
