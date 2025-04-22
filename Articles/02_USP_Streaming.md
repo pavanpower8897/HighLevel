@@ -20,3 +20,39 @@ Frameworks like Apache Flink, Kafka Streams, or Apache Beam (on Dataflow) proces
 Sub-second end-to-end latencies.
 
 
+```
+// This would be called on every incoming event
+func HandleMessage(event Event) {
+	// Step 1: Read state from RocksDB or Flink-managed KV store
+	state := ReadState(event.UserID) // load from persistent KV store
+
+	// Step 2: Process and update state
+	now := CurrentTimestampMillis()
+	updatedState := ProcessEvent(event, &state, now)
+
+	// Step 3: Write state back
+	WriteState(event.UserID, updatedState)
+
+	// Optional: Emit updated state to downstream
+	EmitToTopic("user-activity", updatedState)
+}
+
+
+func ProcessEvent(event Event, state *UserState, now int64) UserState {
+	const windowDuration = 15 * 60 * 1000 // 15 minutes in millis
+
+	// Clean old events
+	filtered := []Event{}
+	for _, e := range state.Events {
+		if now-e.Timestamp <= windowDuration {
+			filtered = append(filtered, e)
+		}
+	}
+
+	// Add new event
+	filtered = append(filtered, event)
+
+	return UserState{Events: filtered}
+}
+
+```
