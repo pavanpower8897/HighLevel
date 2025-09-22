@@ -8,6 +8,49 @@ a tenant doesn’t mean “all customers using the app”, it’s more like a lo
 
 If you hammer one hot partition with both lots of reads + lots of writes, you can still hit throttling because the partition’s total capacity is exceeded.
 
+ MemDS : distributed cache service
+
+- Metadata Server stores the info in both persistent disk and local cache after that 
+- Metadata store = control plane → it’s designed to manage correctness, durability, and relatively low-frequency updates (partition splits/merges, table creation, rebalancing).
+- Request routing lookups = data plane → happens on every single request, millions per second.
+- Even if you scale metadata service with 1000 ECS tasks:
+- You’ve now turned your control plane into a hot data plane dependency.
+- Any hiccup in the metadata service = global outage.
+- The fan-in load will grow with traffic, making it hard to guarantee low tail latencies.
+- Fault tolerance → Even if some nodes crash or act slow, the system still makes progress.
+
+
+1. Why not just scale Metadata Store like using local cache instead of memcache?
+
+Metadata Store = control plane.
+
+It does keep the partition map in memory, but it must also persist updates to durable storage (disk or a replicated DB).
+
+If you tried to scale Metadata Store to handle millions of requests/sec like Request Routers (RRs), then:
+
+Every metadata replica would either need a big local disk (harder to keep in sync), or
+
+They’d all be hitting a shared backing store (network/disk bottleneck).
+
+Consensus + persistence = much higher coordination cost per request.
+
+That’s why Metadata Store is not designed as a data-plane service.
+
+So, you’re right — even if the partition map is cached in memory, scaling Metadata Store horizontally to RR-level throughput would increase the risk of global outages (more replicas, more leader elections, more chances of inconsistency).
+
+
+In simple terms data plan and control plans are design concepts which containe tenchiques and strategies, We can apply these strategies to acheive the expected outcomes, like better scalability, reliability, availability, fault tolerance. 
+
+Data plan -> Designed for handling high thorughput, low latency work , as forwarding packets, serving reads/writes, applying filters/ACLs, and enforcing policies at runtime. (Data plane components execute the real-time workload: serving queries, reading/writing to caches and databases, enforcing runtime rules, and staying optimized for throughput and latency. like our search service)
+
+control plan -> Designed for determining the state such as configurations, polocies, data eetc. 
+
+Scalability: the data plane scales with traffic; the control plane scales with configuration and coordination complexity.
+
+Resilience: if the control plane is impaired, the data plane can often continue operating with the last known good configuration; faults are isolated across planes.
+
+
+
 ![WhatsApp Image 2024-11-27 at 6 28 00 PM](https://github.com/user-attachments/assets/5af5af3f-3673-4c3b-87b5-63c387477a1a)
 ![WhatsApp Image 2024-11-27 at 6 28 00 PM (1)](https://github.com/user-attachments/assets/ca09357a-1974-4660-acc7-75d1eddd16a3)
 ![WhatsApp Image 2024-11-27 at 6 28 01 PM](https://github.com/user-attachments/assets/a9370603-3cc7-4b19-9f82-e0625e5792f4)
