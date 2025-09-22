@@ -2,6 +2,19 @@ Wrapper for dynamodb where we implemented a connection pool to optimize the late
 If ur Connection Pooling for High-Throughput Upstreams!
 If your service makes frequent upstream calls, be mindful of connection pooling to avoid unnecessary overhead and latency spikes.
 
+In DynamoDB, read throttling and write throttling are independent.
+
+BatchWriteItem only consumes write capacity units (WCU).
+
+If your table or partition runs out of write throughput, you’ll see a ThrottlingException (like the one in your error).
+
+High reads elsewhere do not directly cause BatchWriteItem to fail.
+
+Read-heavy traffic consumes read capacity units (RCU).
+
+If RCUs are exhausted, read requests (GetItem, Query, Scan, BatchGetItem) get throttled, but writes are unaffected.
+
+If you hammer one hot partition with both lots of reads + lots of writes, you can still hit throttling because the partition’s total capacity is exceeded.
 
 ![WhatsApp Image 2024-11-27 at 6 28 04 PM](https://github.com/user-attachments/assets/e4341bb7-5929-4f46-ab79-d8a39b71f755)
 ![WhatsApp Image 2024-11-27 at 6 28 04 PM (1)](https://github.com/user-attachments/assets/e417ecf8-765c-408b-9c8f-0136366fb438)
