@@ -1,3 +1,5 @@
+https://seattledataguy.substack.com/p/back-to-the-basics-what-is-columnar
+
 Simple Mental Model
 
 Think of it like this:
@@ -513,4 +515,28 @@ Branching
     ↓
 Scalar execution dominates
 
+
+Run-Length Encoding (RLE): Stores a repeated value once, along with the number of times it appears consecutively.
+
+Original column: A, A, A, A, B, B, B, C
+
+RLE encoded: (A,4), (B,3), (C,1)
+
+Dictionary Encoding: Builds a dictionary of unique values and stores smaller reference keys instead of the full value. Similar to the image above, but if it helps, you can view it as:
+
+Original column: Red, Green, Red, Blue, Red, Green
+
+Dictionary: {0: Red, 1: Green, 2: Blue}
+
+Encoded: 0,1,0,2,0,1
+
+Bit-Packing: Compresses small numeric values using only the minimum number of bits needed.
+
+Delta Encoding: Stores the difference between consecutive values instead of the full values. Thus, the delta is part of delta encoding.
+
+Vectorized Processing
+Columnar storage unlocks a technique called vectorized execution, where operations are applied to batches of column values at once, instead of one row at a time.
+This enables query engines (like DuckDB, Presto, and Spark) to use SIMD (Single Instruction, Multiple Data) CPU instructions, which can perform the same calculation across dozens or hundreds of values in a single cycle.
+
+For example, instead of evaluating price > 100 on each row individually, a vectorized engine processes the entire column segment in one shot.
 
