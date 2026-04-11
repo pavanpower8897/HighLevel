@@ -30,3 +30,14 @@ CQRS (Command Query Responsibility Segregation) is a pattern where you split you
 Command side — handles writes (create, update, delete). Optimized for consistency and validation.
 Query side — handles reads. Optimized for speed and how data is actually displayed.
 Core idea is that read and write workloads are differents, So we might need to handle them accoringly consider eventual consistency, durability and conflict resolution
+
+We need to cleary specifies the scenarios which needs strong consitency and which needs eventual consistency 
+-> For strong consistencies like
+    -> User created a meet but he is not able to see in his own calender
+    -> User cancelled a meet but still able to see
+    -> User accepted the invite but still not reflecting
+    -> if two people book the same room simultaneously, the read used for conflict checking must be strongly consistent, otherwise both bookings go through.
+Where eventual consistency is fine 
+-> Notification delivery 
+-> Other users getting meeting invites
+-> Analystics or meeting history 
