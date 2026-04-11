@@ -23,3 +23,10 @@ Critical issues you missed:
 
 
 <img width="866" height="624" alt="Screenshot 2026-04-11 at 12 01 49 PM" src="https://github.com/user-attachments/assets/061aae22-b8c2-4237-a139-fd4348ee97d5" />
+
+
+CQRS (Command Query Responsibility Segregation) is a pattern where you split your system into two separate models:
+
+Command side — handles writes (create, update, delete). Optimized for consistency and validation.
+Query side — handles reads. Optimized for speed and how data is actually displayed.
+Core idea is that read and write workloads are differents, So we might need to handle them accoringly consider eventual consistency, durability and conflict resolution
