@@ -1,5 +1,22 @@
 # HighLevel
 
+- Contention collapse
+- Latency spikes
+- Throughput collapse
+- Wasted CPU work
+- Retry storm (amplification)
+- optimistic locking
+- Write amplification
+- Operational complexity
+- Processing lag
+- Multi-writer contention
+- Async aggregation
+- idempotent
+- Exactly once gurantee
+- High contention
+- Thundering herd
+- Clock synchronisations
+
 System design good resources:
 
 https://medium.com/coders-mojo/quick-roundup-solved-system-design-case-studies-6ad776d437cf
