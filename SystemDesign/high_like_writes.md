@@ -415,3 +415,93 @@ A single Redis node can typically handle:
 
 👉 ~200K to 1M+ commands/sec total
 (GET/SET/INCR combined, depending on setup)
+
+But same user requests can go to different ECS machines which interects with redis get/set for state identification, So here concurrent race conditions can occur which can give stale redis state and parllely increment can happen through other macin inc command ?
+
+Redis commands are atomic individually, but your logic is not atomic across commands 
+
+✅ Solution 1: Atomic Lua script (best Redis-only fix)
+       - Redis executes Lua single-threaded
+✅ Solution 2: WATCH + MULTI (optimistic locking)
+WATCH like:U1:P1
+
+GET like:U1:P1
+if not liked:
+    MULTI
+    SET like:U1:P1 1
+    INCR count
+    EXEC
+
+Problem
+If conflict → transaction fails → retry needed
+High contention → many retries
+
+👉 Works, but not great at scale
+
+WATCH says: “fail my transaction if this key changes before EXEC”
+If any other client updates the key → your EXEC returns null → you retry
+
+Under high contention (hot key)
+
+Imagine a viral post:
+
+1,000 clients try to like the same post at the same time
+
+Timeline:
+
+All 1000 clients:
+  WATCH key
+  GET old_state = 0
+
+Client A:
+  EXEC → succeeds (sets to 1, increments)
+
+Clients B…1000:
+  EXEC → fail (key changed)
+
+👉 999 failures → 999 retries
+
+- Retry storm (amplification)
+
+Each logical operation may execute multiple times:
+
+1 successful write
++ 999 failed attempts
++ retries of those 999
+
+👉 System load explodes
+
+- Wasted CPU work
+
+Every failed attempt still does:
+
+network round trip
+GET
+transaction setup
+
+👉 Most work produces no useful result
+
+3) Latency spikes
+
+Throughput collapse
+
+4- As contention increases:
+
+success rate per attempt ↓
+retries ↑
+effective throughput ↓
+
+This is classic contention collapse
+
+
+All 1000 clients:
+  WATCH key
+  GET old_state = 0
+
+Client A:
+  EXEC → succeeds (sets to 1, increments)
+
+Clients B…1000:
+  EXEC → fail (key changed)
+
+  👉 999 failures → 999 retries
