@@ -224,3 +224,188 @@ Is this wrong?
 Kafka = memory of the system
 Flink = temporary brain (can forget and relearn)
 Redis = face shown to users
+
+
+
+How Flink actually handles offsets
+
+When using Apache Kafka with Apache Flink:
+
+Important:
+
+For ensuring exactly once processing gurantee:
+We have to maintain attomicity between kafka commit and state checkpoint 
+
+👉 Flink stores Kafka offsets inside its checkpoint
+
+Checkpoint C1:
+  state = ...
+  offsets = partition-3 → offset 100
+
+
+100
+🔄 What happens during processing
+Step 1: Process events
+E1 → E2 → E3
+
+State updated accordingly.
+
+Step 2: Checkpoint happens
+
+Flink captures:
+
+state = after E3
+offset = 3
+Step 3: Kafka commit (optional / async)
+
+Flink may commit offsets to Kafka:
+
+commit offset = 3
+
+👉 BUT this is just for monitoring / external tools
+
+
+Why plain INCR/DECR breaks
+
+Your earlier failure scenario still applies:
+
+Before crash
+count = 100
+LIKE → INCR → 101
+(crash before checkpoint)
+After restart
+event replayed → INCR again → 102 ❌
+
+👉 Redis doesn’t know it already processed that event
+
+🧠 Root problem
+
+Redis INCR is not idempotent
+
+It blindly applies deltas.
+
+
+So here instead of redis incr we should use flink state count and sets to redis for making the aggregated counts consistent
+
+✍️ Short answer
+
+Apache Flink does NOT store checkpoints in Apache Kafka.
+
+It stores them in a separate, durable storage system (called a state backend / checkpoint storage).
+
+🧠 Where checkpoints are actually stored
+
+Flink writes checkpoints to external persistent storage, typically:
+
+Common options
+Filesystem (local or network)
+HDFS (Hadoop Distributed File System)
+Object storage:
+AWS S3
+GCS
+Azure Blob
+
+What gets stored there?
+
+Each checkpoint contains:
+
+Checkpoint C123:
+  ├── Operator state (your (user_id, post_id) → state)
+  ├── Aggregates (post_id → count)
+  ├── Kafka offsets (per partition)
+  └── Metadata (topology, versions)
+
+
+We are eliminated the need to take care of concurrent aggregarted count writes by moving to  post_id level partition processing
+
+
+Redis vs async aggregation thrugh apach kafka Lets talk about the limiting factors interms of scalability & reliability with above approachs, At what scales we should what ?
+
+🧠 Two archetypes
+1) Redis-centric (direct writes)
+API → Redis (SET / INCR) → Read
+2) Async aggregation (event-driven)
+API → Kafka → Flink → Redis (SET projection) → Read
+
+
+Limiting factors
+1) Hot keys (biggest killer)
+
+A viral post:
+
+post:123:likes_count
+
+All traffic hits ONE key → ONE shard → ONE CPU core
+
+👉 Even with Redis cluster:
+
+Key cannot be split automatically
+Throughput capped by a single node
+2) Multi-writer contention
+
+Many API servers:
+
+Server A → INCR
+Server B → INCR
+Server C → INCR
+
+👉 Redis handles atomicity, but:
+
+CPU bound
+network saturation
+latency spikes
+
+📈 Practical ceiling (rough intuition)
+
+Redis-only starts struggling when:
+
+> 50k–100k writes/sec on a single hot key
+or millions of concurrent writers
+or strict correctness is required
+
+
+Why it scales better
+1) Partitioned parallelism
+partition_key = post_id
+
+👉 Each post handled independently
+
+100 partitions → 100 parallel processors
+linear scalability
+2) No hot-key contention
+
+Even viral post:
+
+post:123 → partition 7 → single thread
+
+👉 No lock, no contention, just a queue
+
+
+Limiting factors
+1) Partition bottleneck for a single key
+
+One post → one partition → one thread
+
+👉 Throughput per post is bounded
+
+(you can push this far, but it’s not infinite)
+
+2) Processing lag
+
+If ingestion > processing:
+
+Kafka lag increases
+
+👉 Users see delayed counts
+
+3) Operational complexity
+Kafka cluster
+Flink jobs
+checkpoint tuning
+monitoring lag
+
+3) Write amplification handled
+
+Millions of writes:
+
+append-only log (Kafka
