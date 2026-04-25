@@ -409,3 +409,9 @@ monitoring lag
 Millions of writes:
 
 append-only log (Kafka
+
+If the node simply has Get/sets /incr, How many total commands it can execute per sec ?
+A single Redis node can typically handle:
+
+👉 ~200K to 1M+ commands/sec total
+(GET/SET/INCR combined, depending on setup)
