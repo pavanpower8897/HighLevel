@@ -219,4 +219,8 @@ Final state = LIKED
 Is this wrong?
 👉 Depends on requirement:
 * If you need real-time exact ordering → you need stronger coordination (expensive)
-* Most systems accept: “Order = arrival order” 
+* Most systems accept: “Order = arrival order”
+
+Kafka = memory of the system
+Flink = temporary brain (can forget and relearn)
+Redis = face shown to users
