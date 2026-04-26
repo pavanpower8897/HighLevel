@@ -17,6 +17,8 @@
 - Thundering herd
 - Clock synchronisations
 - Monotonic Reads
+  -  Sticky routing (“Same user → same replica”)
+  -  Read-your-writes via leader
 - consistent prefix reads 
 
 System design good resources:
