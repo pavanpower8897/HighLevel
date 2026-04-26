@@ -16,6 +16,7 @@
 - High contention
 - Thundering herd
 - Clock synchronisations
+- Monotonic Reads
 
 System design good resources:
 
