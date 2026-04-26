@@ -22,3 +22,5 @@ This guarantee says that if a sequence of writes happens in a certain order,
 then anyone reading those writes will see them appear in the same order.
 One solution is to make sure that any writes that are causally related to each other are
 written to the same partition
+
+When a new replica is added, naive hashing causes large-scale remapping, breaking monotonic reads and cache locality. To fix this, systems use consistent hashing to minimize remapping, combined with techniques like version-aware routing and gradual traffic shifting to maintain consistency and stability.
