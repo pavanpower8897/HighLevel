@@ -17,6 +17,7 @@
 - Thundering herd
 - Clock synchronisations
 - Monotonic Reads
+- consistent prefix reads 
 
 System design good resources:
 
