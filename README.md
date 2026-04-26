@@ -19,6 +19,7 @@
 - Monotonic Reads
   -  Sticky routing (“Same user → same replica”)
   -  Read-your-writes via leader
+  -  Version-aware routing 
 - consistent prefix reads 
 
 System design good resources:
