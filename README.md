@@ -16,11 +16,19 @@
 - High contention
 - Thundering herd
 - Clock synchronisations
+- conflict resolutio
+- retry handling
+- conditional writes
 - Monotonic Reads
   -  Sticky routing (“Same user → same replica”)
   -  Read-your-writes via leader
   -  Version-aware routing 
 - consistent prefix reads 
+
+
+** We should design for evolvability, not prematurely optimize for hypothetical requirements
+
+Ex: Yes, future workflows may require online revision history. But today our confirmed operational requirement is current-state workflow execution, while immutable historical lineage already exists in append-only pipelines. We can evolve the online model toward versioning once real product workflows justify the additional complexity
 
 System design good resources:
 
