@@ -23,7 +23,8 @@
   -  Sticky routing (“Same user → same replica”)
   -  Read-your-writes via leader
   -  Version-aware routing 
-- consistent prefix reads 
+- consistent prefix reads
+- cache stampedes
 
 
 ** We should design for evolvability, not prematurely optimize for hypothetical requirements
