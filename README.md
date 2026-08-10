@@ -1,6 +1,7 @@
 # HighLevel
 
 - Contention collapse
+- Contention delay
 - Latency spikes
 - Throughput collapse
 - Wasted CPU work
