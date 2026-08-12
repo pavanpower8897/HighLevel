@@ -39,6 +39,12 @@ Two clients update the same record concurrently.
 A disk becomes unavailable.
 A request is repeated after a timeout.
 
+In order to be reliable, a system has to deal with these faults and ensure that they
+don’t cause catastrophic failure of the entire system. However, implementing fault-
+tolerance mechanisms is a lot of work. It requires a lot of careful thinking about all
+the things that can go wrong, and a lot of testing to ensure that the solution actually
+works.
+
 **server crashes during a write.**
 - Crash before COMMIT: Database aborts the transaction; client starts a new transaction and safely retries.
 - Crash during COMMIT, before durable commit: Database aborts on recovery; client treats the result as unknown and retries using the same idempotency key.
