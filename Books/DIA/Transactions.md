@@ -28,3 +28,26 @@ recovery after crashes;
 monitoring for inconsistent states.
 
 That alternative may improve availability or scalability, but it is not automatically simpler or cheaper.
+
+Fault tolerance is the engineering work that anticipates, contains, and recovers from those faults. Reliability is the user-visible result: the system continues to meet its stated correctness and service guarantees despite them.
+
+A **fault** is one component going wrong:
+A server crashes during a write.
+A network message is lost.
+An application process restarts.
+Two clients update the same record concurrently.
+A disk becomes unavailable.
+A request is repeated after a timeout.
+
+**server crashes during a write.**
+Crash before COMMIT: Database aborts the transaction; client starts a new transaction and safely retries.
+Crash during COMMIT, before durable commit: Database aborts on recovery; client treats the result as unknown and retries using the same idempotency key.
+Crash after durable commit, before data pages finish writing: Database replays the log and preserves the commit; client checks status or retries idempotently.
+Crash after durable commit, before response reaches client: Transaction succeeded but client sees a timeout; client must query status or retry with the same idempotency key.
+Crash after success response reaches client: Transaction is committed and durable; client proceeds without retrying.
+Revision rule: A timeout during COMMIT means unknown outcome—not failure; check status or retry idempotently.
+
+
+
+
+
