@@ -57,6 +57,18 @@ With transactions, error
 handling becomes much simpler for an application, because it doesn’t need to worry
 about partial failure—i.e., the case where some operations succeed and some fail 
 
+Pure hyperbole means an exaggerated, overly absolute claim that ignores real-world trade-offs.
+The author is criticizing two opposite viewpoints:
+“Distributed transactions are always too expensive.”
+This exaggerates their performance and availability costs; transactions can be perfectly reasonable when used within suitable boundaries.
+
+“Every serious application with valuable data must use transactions.”
+This exaggerates their necessity; some systems can maintain correctness using idempotency, conditional writes, asynchronous workflows, compensation, and reconciliation.
+
+The balanced viewpoint is:
+Transactions are neither universally harmful nor universally necessary; choose them according to the required correctness guarantees, failure model, performance needs, and operational complexity.
+
+
 
 
 
