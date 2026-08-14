@@ -26,7 +26,11 @@
   -  Version-aware routing 
 - consistent prefix reads
 - cache stampedes
-- safety guarantees (DIA) (Database taking care of transaction complexities) 
+- safety guarantees (DIA) (Database taking care of transaction complexities)
+- read committed
+- snapshot isolation
+- serializability
+- Pure hyperbole (means an exaggerated, overly absolute claim that ignores real-world trade-offs.) (Distributed transactions are always too expensive.” VS Every serious application with valuable data must use transactions.) , Balanced view point 
 
 
 ** We should design for evolvability, not prematurely optimize for hypothetical requirements
@@ -54,4 +58,5 @@ Instead, ask:
 - "If I get this event twice, what will happen?"
 - "If this event is late by 10 minutes, will it still be useful?"
 - "If I reprocess yesterday’s data, will I corrupt today’s?"
+
 
