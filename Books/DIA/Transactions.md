@@ -53,6 +53,10 @@ works.
 - Crash after success response reaches client: Transaction is committed and durable; client proceeds without retrying.
 Revision rule: A timeout during COMMIT means unknown outcome—not failure; check status or retry idempotently.
 
+With transactions, error
+handling becomes much simpler for an application, because it doesn’t need to worry
+about partial failure—i.e., the case where some operations succeed and some fail 
+
 
 
 
