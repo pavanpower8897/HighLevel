@@ -26,6 +26,7 @@
   -  Version-aware routing 
 - consistent prefix reads
 - cache stampedes
+- safety guarantees (DIA) (Database taking care of transaction complexities) 
 
 
 ** We should design for evolvability, not prematurely optimize for hypothetical requirements
