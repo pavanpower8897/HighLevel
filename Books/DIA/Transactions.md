@@ -71,6 +71,25 @@ Transactions are neither universally harmful nor universally necessary; choose t
 
 Giving up partition instead of Consistency and available in CAP theorem:
 One ATM. One single database, in one location, no replica anywhere else. There's no second copy to fall out of sync with, so there's nothing to partition.
+Consistency is the application's responsibility.
 
+C is fundamentally different from A, I, and D.
 
+Think of it this way:
+
+Property	Who primarily provides it?
+Atomicity	Database
+Isolation	Database
+Durability	Database
+Consistency	Application + database constraints
+Database guarantees safe execution.
+Application guarantees correct meaning.
+
+Or even simpler:
+
+ACID doesn't mean "the database makes my data correct."
+
+It means:
+
+If I define my transaction correctly and my starting state is valid, the database's transactional guarantees help me move safely to another valid state.
 
