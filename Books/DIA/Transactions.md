@@ -69,7 +69,8 @@ The balanced viewpoint is:
 Transactions are neither universally harmful nor universally necessary; choose them according to the required correctness guarantees, failure model, performance needs, and operational complexity.
 
 
-
+Giving up partition instead of Consistency and available in CAP theorem:
+One ATM. One single database, in one location, no replica anywhere else. There's no second copy to fall out of sync with, so there's nothing to partition.
 
 
 
