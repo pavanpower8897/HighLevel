@@ -93,3 +93,61 @@ It means:
 
 If I define my transaction correctly and my starting state is valid, the database's transactional guarantees help me move safely to another valid state.
 
+
+What is Consistency ?
+In d systems Consistency is a concept which explains how quickly we can fetch the results which we have written, 
+S con -> Once the data has updated, We always see the latest update results
+E con -> Eventually we will be able to see but not immediate 
+
+CAP Theorem 
+Can we acheive C, A by giving up P ?
+Giving up P means there shouldnt be any network tolerance that means we cant power the system using multiple servers which effects the scalability like 
+As we are forced to power it using single server
+
+Above example can be applicable only to databases or application servers aswell ?
+
+
+What is isolation ?
+Isolation in the sense of ACID means that concurrently executing transactions are
+isolated from each other: they cannot step on each other’s toes. The classic database
+textbooks formalize isolation as serializability, which means that each transaction can
+pretend that it is the only transaction running on the entire database. The database
+ensures that when the transactions have committed, the result is the same as if they
+had run serially (one after another), even though in reality they may have run con‐
+currently
+
+
+Ex: Two clients who are trying to increment same record, Then we can see incorrect count values 
+
+Dynamodb aswell provides isolation gurantees
+
+Like if when updating the items 
+Even when concurrent requests lands parllely , It will execute them serially inorder to acheive the valid state
+UpdateExpression:
+SET counter = counter + :counterValue,
+    balance = balance - :balanceValue
+
+But is it only true for increment/decremetnals operatiosn ?
+No we can also acheive this on normal fields updates liek status etc but we need to use condition writes
+
+"Once APPROVED, nobody should be able to change it back to REJECTED."
+
+then you need an additional concurrency-control mechanism, such as a ConditionExpression:
+
+ConditionExpression:
+status = :pending
+Otherwise based on the ordering simiply status will be overrided 
+
+ncrement/decrement is just one common concurrency problem.
+
+Isolation matters whenever concurrent operations access overlapping data:
+
+Operation	Concurrency concern
+counter += 1	Lost updates
+status = APPROVED	Conflicting writes
+stock -= 1	Overselling
+balance -= 100	Concurrent balance changes
+SET field = X	Last-write-wins conflicts (Database overides based on the ordering)
+Multiple items	Cross-item consistency
+
+
