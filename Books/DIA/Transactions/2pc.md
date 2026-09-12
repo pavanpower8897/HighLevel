@@ -229,3 +229,154 @@ Normal transaction:
 And the trade-off is:
 
 2PC gives you distributed atomicity, but you pay for it with coordination, latency, resource holding, and failure-related blocking.
+
+Real-world analogy: buying a phone with EMI
+
+Imagine you're buying a phone from a store using financing.
+
+There are two parties:
+
+🏪 Store → needs to reserve/give you the phone
+🏦 Bank → needs to approve the payment/loan
+
+You want:
+
+Either the whole purchase happens, or it doesn't.
+
+You don't want:
+
+Store gives you the phone, but the bank says payment failed.
+
+2PC maps nicely to this
+
+There is a coordinator — think of it as the purchase manager.
+
+                 Coordinator
+                /            \
+               ↓              ↓
+          Store system     Bank system
+Phase 1 — Prepare
+
+Coordinator asks:
+
+"Store, can you complete the sale?"
+
+Store:
+
+"Yes. I've reserved the phone."
+
+Coordinator asks:
+
+"Bank, can you approve the payment?"
+
+Bank:
+
+"Yes. I've reserved/approved the funds."
+
+Now both are prepared.
+
+Store → READY
+Bank  → READY
+
+Importantly, they haven't finalized the transaction yet.
+
+Phase 2 — Commit
+
+Coordinator now knows everyone is ready:
+
+"Okay, COMMIT."
+
+Coordinator
+    ├──→ Store: COMMIT
+    └──→ Bank: COMMIT
+
+Store completes the sale.
+
+Bank completes the payment.
+
+Store → COMMITTED ✅
+Bank  → COMMITTED ✅
+Now let's map this to actual software
+
+Imagine an e-commerce company has:
+
+Order Service
+     ↓
+Order DB
+
+Payment Service
+     ↓
+Payment DB
+
+A customer places an order for ₹1,000.
+
+We need:
+
+Create Order
++
+Charge Payment
+
+to behave atomically.
+
+Without 2PC
+
+The application might do:
+
+1. Order Service → create order
+2. Payment Service → charge ₹1,000
+
+Suppose:
+
+Order DB → COMMIT ✅
+
+Payment DB → ERROR ❌
+
+Now:
+
+Order = CREATED
+Payment = FAILED
+
+You need additional application logic to reconcile this.
+
+With 2PC
+
+You have a coordinator:
+
+                    2PC Coordinator
+                    /              \
+                   ↓                ↓
+             Order Service     Payment Service
+                   ↓                ↓
+               Order DB         Payment DB
+Phase 1 — Prepare
+
+Coordinator:
+
+→ Order DB: PREPARE
+→ Payment DB: PREPARE
+
+Order DB:
+
+"I've done the work and can commit."
+
+Payment DB:
+
+"I've done the work and can commit."
+
+So:
+
+Order DB    → PREPARED ✅
+Payment DB  → PREPARED ✅
+Phase 2 — Commit
+
+Coordinator:
+
+→ Order DB: COMMIT
+→ Payment DB: COMMIT
+
+Result:
+
+Order DB    → COMMITTED ✅
+Payment DB  → COMMITTED ✅
+
+That's distributed atomicity.
