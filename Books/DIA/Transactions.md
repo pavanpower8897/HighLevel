@@ -3,9 +3,16 @@ because of the performance or availability problems that it brings. We believe i
 have application programmers deal with performance problems due to overuse of transac‐
 tions as bottlenecks arise, rather than always coding around the lack of transactions.
 
-James Corbett et al., Spanner: Google’s Globally-Distributed Database (2012)
+(A single database can provide atomic transactions without 2PC)
 
+James Corbett et al., Spanner: Google’s Globally-Distributed Database (2012)
 The most dangerous transaction is often not the one doing the most computation. It is the one holding a popular resource while waiting on remote work.
+Transaction = correctness mechanism with a resource cost.
+Why performance bottleneck:
+The cost mainly becomes painful when:
+** long transaction + high concurrency + contention → bottleneck
+Why costly ?
+
 
 The strategic comparison is not:
 expensive distributed transaction
