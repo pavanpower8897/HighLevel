@@ -89,3 +89,12 @@ Versioning/MVCC approach:
 "Keep the old menu available while we prepare the new menu. Once the new menu is ready, new customers get it."
 
 Much better for read-heavy workloads
+
+
+You're actually discovering an important database design trade-off:
+
+Read-heavy workload → minimize reader/writer contention.
+
+That's why techniques such as MVCC, snapshots, read replicas, caching, and lock-free/read-optimized structures are valuable.
+
+So your intuition is right — contention is often the real performance problem, not the mere existence of transactions or locks.
